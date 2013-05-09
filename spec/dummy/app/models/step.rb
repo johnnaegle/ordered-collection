@@ -4,5 +4,5 @@ class Step < ActiveRecord::Base
   belongs_to :recipe, :inverse_of => :ingredients
   
   validates :instruction, :presence => true
-  validates :step_number, :numericality => {:greater_than_or_equal_to => 0, :only_integer => true}  
+  validates :step_number, :numericality => {:greater_than_or_equal_to => 1, :only_integer => true}  
 end

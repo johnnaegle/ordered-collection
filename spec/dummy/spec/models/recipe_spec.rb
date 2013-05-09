@@ -20,9 +20,9 @@ describe Recipe do
   }
   
   let(:recipe_with_steps) {
-    recipe.steps.build(:step_number => 0, :instruction => 'zero')
     recipe.steps.build(:step_number => 1, :instruction => 'one')
     recipe.steps.build(:step_number => 2, :instruction => 'two')
+    recipe.steps.build(:step_number => 3, :instruction => 'three')
     recipe.steps.shuffle!
     recipe  
   }
@@ -54,14 +54,15 @@ describe Recipe do
     it "is set if missing" do
       r = recipe_with_steps
       r.steps[1].step_number = ''
-      
+
       r.should be_valid
+      r.steps.map(&:step_number).should =~ [1,2,3]
     end
     
     it "sorts correctly" do
       10.times do 
         recipe_with_steps.steps.shuffle!
-        recipe_with_steps.ordered_steps.map(&:instruction).should == ['zero', 'one', 'two']
+        recipe_with_steps.ordered_steps.map(&:instruction).should == ['one', 'two', 'three']
       end
     end
   end

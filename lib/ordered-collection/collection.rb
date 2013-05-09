@@ -19,8 +19,10 @@ module OrderedCollection
       # @param [Symbol] collection Name of the collection on which to enforce an order
       # @param [Hash] options
       # @param options [Symbol] :sort_field Alternative sort column on the model in the collection. Defaults to :display_order
+      # @param options [Integer] :reindex_from When initializing sort fields that are blank or null, start from this value instead of 0
       def has_ordered_collection(collection, options = {})
         sort_field = options[:sort_field] || :display_order
+        reindex_from = options[:reindex_from] || 0
         
         self.send(:define_method, :"ordered_#{collection.to_s}") do
           self.send(collection).each do |member|
@@ -31,7 +33,7 @@ module OrderedCollection
         end
         
         before_validation do
-          self.send(:"ordered_#{collection}").each_with_index {|member, index| member.send("#{sort_field}=",index)}
+          self.send(:"ordered_#{collection}").each_with_index {|member, index| member.send("#{sort_field}=",index + reindex_from)}
         end
       end
     end 

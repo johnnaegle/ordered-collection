@@ -9,6 +9,6 @@ class Recipe < ActiveRecord::Base
   validates_associated :ingredients, :steps
   
   has_ordered_collection :ingredients
-  has_ordered_collection :steps, :sort_field => :step_number
+  has_ordered_collection :steps, :sort_field => :step_number, :reindex_from => 1
   
 end
